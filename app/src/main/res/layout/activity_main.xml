@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context="com.maxis7567.fakelocation.MainActivity">
     <LinearLayout
         android:focusable="true"
         android:focusableInTouchMode="true"
@@ -47,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="4"
-            android:text="@string/ActivityMain_..." />
+            android:text="..." />
 
     </LinearLayout>
 

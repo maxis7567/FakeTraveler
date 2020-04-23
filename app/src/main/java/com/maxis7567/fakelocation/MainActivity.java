@@ -1,5 +1,6 @@
-package cl.coders.faketraveler;
+package com.maxis7567.fakelocation;
 
+import android.Manifest;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -9,25 +10,31 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import static cl.coders.faketraveler.MainActivity.SourceChange.CHANGE_FROM_EDITTEXT;
-import static cl.coders.faketraveler.MainActivity.SourceChange.CHANGE_FROM_MAP;
-import static cl.coders.faketraveler.MainActivity.SourceChange.NONE;
+import com.maxis7567.fakelocation.R;
+
+import static com.maxis7567.fakelocation.MainActivity.SourceChange.CHANGE_FROM_EDITTEXT;
+import static com.maxis7567.fakelocation.MainActivity.SourceChange.CHANGE_FROM_MAP;
+import static com.maxis7567.fakelocation.MainActivity.SourceChange.NONE;
 
 
 public class MainActivity extends AppCompatActivity {
 
-    static final String sharedPrefKey = "cl.coders.mockposition.sharedpreferences";
+    static final String sharedPrefKey = "FakeLocation";
     static final int KEEP_GOING = 0;
     static private int SCHEDULE_REQUEST_CODE = 1;
     public static Intent serviceIntent;
@@ -92,9 +99,20 @@ public class MainActivity extends AppCompatActivity {
 
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebChromeClient(new WebChromeClient());
+        webView.setWebViewClient(new WebViewClient(){
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                webView.loadUrl("javascript:(function() { " +
+                        "document.getElementsByClassName('leaflet-bottom leaflet-right')[0].style.display='none'; " +
+
+                        "})()");
+            }
+        });
         webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         webView.addJavascriptInterface(webAppInterface, "Android");
         webView.loadUrl("file:///android_asset/map.html");
+
 
         try {
             PackageInfo pInfo = this.getPackageManager().getPackageInfo(getPackageName(), 0);
@@ -105,8 +123,9 @@ public class MainActivity extends AppCompatActivity {
 
         checkSharedPrefs();
 
-        howManyTimes = Integer.parseInt(sharedPref.getString("howManyTimes", "1"));
-        timeInterval = Integer.parseInt(sharedPref.getString("timeInterval", "10"));
+        howManyTimes = Integer.parseInt(sharedPref.getString("howManyTimes", "0"));
+//        timeInterval = Integer.parseInt(sharedPref.getString("timeInterval", "10"));
+        timeInterval = 0;
 
         try {
             lat = Double.parseDouble(sharedPref.getString("lat", ""));
@@ -225,8 +244,8 @@ public class MainActivity extends AppCompatActivity {
             editor.putString("lat", lat);
             editor.putString("lng", lng);
             editor.putInt("version", currentVersion);
-            editor.putString("howManyTimes", "1");
-            editor.putString("timeInterval", "10");
+            editor.putString("howManyTimes", "0");
+            editor.putString("timeInterval", "1");
             editor.putLong("endTime", 0);
             editor.commit();
             e.printStackTrace();
@@ -247,7 +266,6 @@ public class MainActivity extends AppCompatActivity {
         lat = Double.parseDouble(editTextLat.getText().toString());
         lng = Double.parseDouble(editTextLng.getText().toString());
 
-        toast(context.getResources().getString(R.string.MainActivity_MockApplied));
 
         endTime = System.currentTimeMillis() + (howManyTimes - 1) * timeInterval * 1000;
         editor.putLong("endTime", endTime);
@@ -266,6 +284,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         exec(lat, lng);
+        toast(context.getResources().getString(R.string.MainActivity_MockApplied));
 
         if (!hasEnded()) {
             toast(context.getResources().getString(R.string.MainActivity_MockLocRunning));

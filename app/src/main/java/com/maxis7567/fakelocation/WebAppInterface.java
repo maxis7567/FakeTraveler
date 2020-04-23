@@ -1,9 +1,7 @@
-package cl.coders.faketraveler;
+package com.maxis7567.fakelocation;
 
 import android.content.Context;
 import android.webkit.JavascriptInterface;
-
-import static cl.coders.faketraveler.MainActivity.SourceChange.CHANGE_FROM_MAP;
 
 
 public class WebAppInterface {
@@ -29,7 +27,7 @@ public class WebAppInterface {
                 String lat = str.substring(str.indexOf('(') + 1, str.indexOf(','));
                 String lng = str.substring(str.indexOf(',') + 2, str.indexOf(')'));
 
-                MainActivity.setLatLng(lat, lng, CHANGE_FROM_MAP);
+                MainActivity.setLatLng(lat, lng, MainActivity.SourceChange.CHANGE_FROM_MAP);
             }
         });
     }

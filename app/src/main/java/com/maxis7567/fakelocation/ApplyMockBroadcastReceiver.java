@@ -1,4 +1,4 @@
-package cl.coders.faketraveler;
+package com.maxis7567.fakelocation;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;

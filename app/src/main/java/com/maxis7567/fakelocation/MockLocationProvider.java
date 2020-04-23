@@ -1,4 +1,4 @@
-package cl.coders.faketraveler;
+package com.maxis7567.fakelocation;
 
 import android.content.Context;
 import android.location.Location;
@@ -23,13 +23,14 @@ public class MockLocationProvider {
 
         LocationManager lm = (LocationManager) ctx.getSystemService(
                 Context.LOCATION_SERVICE);
+
         try
         {
             lm.addTestProvider(providerName, false, false, false, false, false,
-                    true, true, 0, 5);
+                    true, true, 0, 10);
             lm.setTestProviderEnabled(providerName, true);
-        } catch(SecurityException e) {
-            throw new SecurityException("Not allowed to perform MOCK_LOCATION");
+        } catch(Exception e) {
+//            throw new SecurityException("Not allowed to perform MOCK_LOCATION");
         }
     }
 
@@ -49,10 +50,10 @@ public class MockLocationProvider {
         mockLocation.setLongitude(lon);
         mockLocation.setAltitude(3F);
         mockLocation.setTime(System.currentTimeMillis());
-        //mockLocation.setAccuracy(16F);
+        mockLocation.setAccuracy(10F);
         mockLocation.setSpeed(0.01F);
         mockLocation.setBearing(1F);
-        mockLocation.setAccuracy(3F);
+//        mockLocation.setAccuracy(3F);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             mockLocation.setBearingAccuracyDegrees(0.1F);
         }

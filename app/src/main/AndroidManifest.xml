@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    android:installLocation="auto"
     xmlns:tools="http://schemas.android.com/tools"
-    package="cl.coders.faketraveler">
+    package="com.maxis7567.fakelocation">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION"
-        tools:ignore="MockLocation" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION"
+        tools:ignore="MockLocation" />
 
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="cl.coders.faketraveler.MainActivity">
+        <activity android:name="com.maxis7567.fakelocation.MainActivity">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,17 +23,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="cl.coders.faketraveler.MoreActivity"
-            android:parentActivityName="cl.coders.faketraveler.MainActivity" >
+        <activity android:name="com.maxis7567.fakelocation.MoreActivity"
+            android:parentActivityName="com.maxis7567.fakelocation.MainActivity" >
         </activity>
 
 
         <service
-            android:name="cl.coders.faketraveler.ApplyMockBroadcastReceiver"
+            android:name="com.maxis7567.fakelocation.ApplyMockBroadcastReceiver"
             android:enabled="true"
             android:exported="true"></service>
 
-        <receiver android:name=".ApplyMockBroadcastReceiver"  android:exported="true">
+        <receiver android:name="com.maxis7567.fakelocation.ApplyMockBroadcastReceiver"  android:exported="true">
         </receiver>
     </application>
 
